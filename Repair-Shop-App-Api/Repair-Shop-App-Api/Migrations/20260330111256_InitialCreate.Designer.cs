@@ -12,7 +12,7 @@ using Repair_Shop_App_Api.Data;
 namespace Repair_Shop_App_Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260329113553_InitialCreate")]
+    [Migration("20260330111256_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />

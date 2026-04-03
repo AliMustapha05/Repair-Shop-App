@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Repair_Shop_App_Api.Data;
+using Repair_Shop_App_Api.Models;
 using Repair_Shop_App_Api.Repositories;
 using Repair_Shop_App_Api.Services;
 using System;
@@ -53,6 +54,42 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// --------- ADD SEEDING CODE HERE ---------
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+    // DeviceTypes seed
+    if (!db.DeviceTypes.Any())
+    {
+        db.DeviceTypes.AddRange(
+            new DeviceTypes { Name = "Mobile", IsActive = true },
+            new DeviceTypes { Name = "Laptop", IsActive = true },
+            new DeviceTypes { Name = "Tablet", IsActive = true },
+            new DeviceTypes { Name = "Desktop", IsActive = true }
+        );
+        db.SaveChanges();
+    }
+
+    // StatusSteps seed
+    if (!db.StatusSteps.Any())
+    {
+        db.StatusSteps.AddRange(
+            new StatusSteps { Name = "Received", SortOrder = 1, IsActive = true },
+            new StatusSteps { Name = "Diagnosed", SortOrder = 2, IsActive = true },
+            new StatusSteps { Name = "Waiting for parts", SortOrder = 3, IsActive = true },
+            new StatusSteps { Name = "In progress", SortOrder = 4, IsActive = true },
+            new StatusSteps { Name = "Quality check", SortOrder = 5, IsActive = true },
+            new StatusSteps { Name = "Need of pickup", SortOrder = 6, IsActive = true },
+            new StatusSteps { Name = "Returned", SortOrder = 7, IsActive = true },
+            new StatusSteps { Name = "Canceled", SortOrder = 8, IsActive = true }
+        );
+        db.SaveChanges();
+    }
+}
+// ----------------------------------------
+
 
 // Enable CORS
 app.UseCors("AllowAngular");
