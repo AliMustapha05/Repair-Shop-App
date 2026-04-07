@@ -1,0 +1,14 @@
+<div>
+  <h2>Repair Details</h2>
+
+  <div class="timeline">
+    <div class="timeline-item" *ngFor="let h of history">
+      <div class="circle"></div>
+
+      <div class="content">
+        <p class="status">Status ID: {{ h.statusStepId }}</p>
+        <p class="date">{{ h.date }}</p>
+      </div>
+    </div>
+  </div>
+</div>

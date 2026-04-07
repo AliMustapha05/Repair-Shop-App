@@ -1,0 +1,17 @@
+<div class="form-container">
+  <h2>Add Repair</h2>
+
+  <form (ngSubmit)="submit()">
+    <div>
+      <label>Device Id</label>
+      <input type="number" [(ngModel)]="repair.deviceId" name="deviceId" required />
+    </div>
+
+    <div>
+      <label>Issue Description</label>
+      <input type="text" [(ngModel)]="repair.issueDescription" name="issueDescription" required />
+    </div>
+
+    <button type="submit">Save</button>
+  </form>
+</div>

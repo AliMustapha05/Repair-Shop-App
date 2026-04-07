@@ -1,0 +1,23 @@
+table {
+  margin-top: 15px;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+}
+
+button {
+  margin-right: 5px;
+  padding: 5px 10px;
+  border: none;
+  color: white;
+}
+
+button:first-child {
+  background-color: #007bff;
+}
+
+button:last-child {
+  background-color: red;
+}

@@ -29,10 +29,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular",
-        policy => policy
-            .WithOrigins("http://localhost:4200") // Angular dev server
+        policy => {
+            policy
+            .WithOrigins("http://localhost:4200")
             .AllowAnyHeader()
-            .AllowAnyMethod());
+            .AllowAnyMethod();
+        });
 });
 
 // Add controllers

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { RepairDto, CreateRepairDto, UpdateRepairDto, RepairStatusHistoryDto } from '../models/repair.model';
+import { RepairDto, CreateRepairDto, UpdateRepairDto, RepairStatusHistoryDto } from '../../shared/models/repair.model';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +33,9 @@ export class RepairsService {
 
   addStatus(repairId: number, status: RepairStatusHistoryDto): Observable<RepairStatusHistoryDto> {
     return this.http.post<RepairStatusHistoryDto>(`${this.apiUrl}/${repairId}/status`, status);
+  }
+
+  getHistory(repairId: number): Observable<RepairStatusHistoryDto[]> {
+    return this.http.get<RepairStatusHistoryDto[]>(`${this.apiUrl}/${repairId}/history`);
   }
 }

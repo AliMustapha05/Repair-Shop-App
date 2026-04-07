@@ -1,0 +1,23 @@
+<div>
+  <h2>Status Steps</h2>
+
+  <!-- Empty -->
+  <app-empty-state *ngIf="steps.length === 0" message="No status steps found"> </app-empty-state>
+
+  <!-- Table -->
+  <table *ngIf="steps.length > 0" border="1" width="100%">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let s of steps">
+        <td>{{ s.id }}</td>
+        <td>{{ s.name }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

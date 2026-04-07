@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { StatusStepDto, CreateStatusStepDto, UpdateStatusStepDto } from '../models/status-step.model';
+import { StatusStepDto, CreateStatusStepDto, UpdateStatusStepDto } from '../../shared/models/status-step.model';
 
 @Injectable({
   providedIn: 'root'

@@ -1,0 +1,31 @@
+<div>
+  <h2>Devices</h2>
+
+  <!-- Empty State -->
+  <app-empty-state *ngIf="devices.length === 0" message="No devices found"> </app-empty-state>
+
+  <!-- Table -->
+  <table *ngIf="devices.length > 0" border="1" width="100%">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Serial</th>
+        <th>Type Id</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let d of devices">
+        <td>{{ d.id }}</td>
+        <td>{{ d.name }}</td>
+        <td>{{ d.serialNumber }}</td>
+        <td>{{ d.deviceTypeId }}</td>
+        <td>
+          <button (click)="delete(d.id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
