@@ -7,7 +7,7 @@ import { RepairDto, CreateRepairDto, UpdateRepairDto, RepairStatusHistoryDto } f
   providedIn: 'root'
 })
 export class RepairsService {
-  private apiUrl = 'https://localhost:5001/api/Repairs';
+  private apiUrl = 'https://localhost:7242/api/Repairs';
 
   constructor(private http: HttpClient) { }
 

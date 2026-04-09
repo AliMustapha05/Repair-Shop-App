@@ -7,7 +7,7 @@ import { StatusStepDto, CreateStatusStepDto, UpdateStatusStepDto } from '../../s
   providedIn: 'root'
 })
 export class StatusStepsService {
-  private apiUrl = 'https://localhost:5001/api/StatusSteps';
+  private apiUrl = 'https://localhost:7242/api/StatusSteps';
 
   constructor(private http: HttpClient) { }
 

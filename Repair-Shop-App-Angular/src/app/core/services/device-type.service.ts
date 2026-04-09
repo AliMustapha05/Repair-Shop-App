@@ -7,7 +7,7 @@ import { DeviceTypeDto, CreateDeviceTypeDto, UpdateDeviceTypeDto } from '../../s
   providedIn: 'root'
 })
 export class DeviceTypesService {
-  private apiUrl = 'https://localhost:5001/api/DeviceTypes';
+  private apiUrl = 'https://localhost:7242/api/DeviceTypes';
 
   constructor(private http: HttpClient) { }
 

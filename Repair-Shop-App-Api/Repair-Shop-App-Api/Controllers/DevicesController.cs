@@ -20,20 +20,28 @@ namespace Repair_Shop_App_Api.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
-            var list = await _service.GetAllAsync();
-
-            var result = list.Select(d => new DeviceDto
+            try
             {
-                Id = d.Id,
-                DeviceTypeId = d.DeviceTypeId,
-                Brand = d.Brand,
-                Model = d.Model,
-                SerialNumber = d.SerialNumber,
-                OwnerName = d.OwnerName,
-                OwnerPhone = d.OwnerPhone
-            });
+                var list = await _service.GetAllAsync();
 
-            return Ok(result);
+                var result = list.Select(d => new DeviceDto
+                {
+                    Id = d.Id,
+                    DeviceTypeId = d.DeviceTypeId,
+                    Brand = d.Brand,
+                    Model = d.Model,
+                    SerialNumber = d.SerialNumber,
+                    OwnerName = d.OwnerName,
+                    OwnerPhone = d.OwnerPhone
+                });
+
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+    {
+                return StatusCode(500, ex.Message); // 👈 THIS WILL SHOW THE REAL ERROR
+            }
         }
 
         [HttpGet("{id}")]

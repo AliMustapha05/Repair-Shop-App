@@ -7,7 +7,7 @@ import { DeviceDto, CreateDeviceDto, UpdateDeviceDto } from '../../shared/models
   providedIn: 'root'
 })
 export class DeviceService {
-  private apiUrl = 'http://localhost:5001/api/Devices'; // Change port if different
+  private apiUrl = 'https://localhost:7242/api/Devices'; 
 
   constructor(private http: HttpClient) { }
 
