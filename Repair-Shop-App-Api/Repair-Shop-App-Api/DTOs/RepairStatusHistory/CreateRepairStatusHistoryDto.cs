@@ -1,4 +1,4 @@
-﻿namespace Repair_Shop_App_Api.DTOs.RepairsStatusHistory
+﻿namespace Repair_Shop_App_Api.DTOs.RepairStatusHistory
 {
     public class CreateRepairStatusHistoryDto
     {

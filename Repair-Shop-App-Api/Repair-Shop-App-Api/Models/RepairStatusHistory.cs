@@ -8,21 +8,23 @@ namespace Repair_Shop_App_Api.Models
         [Key]
         public int Id { get; set; }
 
+        // FK → Repair
         [ForeignKey(nameof(Repair))]
         public int RepairId { get; set; }
 
+        // FK → StatusStep
         [ForeignKey(nameof(StatusStep))]
-        public int StatusStepsId { get; set; }
+        public int StatusStepId { get; set; }
 
         [Required]
-        public DateTime ChangedAt { get; set; } = DateTime.Now;
+        public DateTime ChangedAt { get; set; } = DateTime.UtcNow;
 
         [MaxLength(500)]
-        public string Note { get; set; } = string.Empty;
+        public string? Note { get; set; }
 
+        // 🔹 Navigation Properties
         public Repairs Repair { get; set; } = null!;
+
         public StatusSteps StatusStep { get; set; } = null!;
-
-
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Repair_Shop_App_Api.DTOs;
 using Repair_Shop_App_Api.DTOs.Devices;
 using Repair_Shop_App_Api.Models;
 using Repair_Shop_App_Api.Services;
@@ -20,28 +19,20 @@ namespace Repair_Shop_App_Api.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAll()
         {
-            try
+            var list = await _service.GetAllAsync();
+
+            var result = list.Select(d => new DeviceDto
             {
-                var list = await _service.GetAllAsync();
+                Id = d.Id,
+                DeviceTypeId = d.DeviceTypeId,
+                Brand = d.Brand,
+                Model = d.Model,
+                SerialNumber = d.SerialNumber,
+                OwnerName = d.OwnerName,
+                OwnerPhone = d.OwnerPhone
+            });
 
-                var result = list.Select(d => new DeviceDto
-                {
-                    Id = d.Id,
-                    DeviceTypeId = d.DeviceTypeId,
-                    Brand = d.Brand,
-                    Model = d.Model,
-                    SerialNumber = d.SerialNumber,
-                    OwnerName = d.OwnerName,
-                    OwnerPhone = d.OwnerPhone
-                });
-
-                return Ok(result);
-
-            }
-            catch (Exception ex)
-    {
-                return StatusCode(500, ex.Message); // 👈 THIS WILL SHOW THE REAL ERROR
-            }
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
@@ -63,7 +54,7 @@ namespace Repair_Shop_App_Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(DeviceDto dto)
+        public async Task<ActionResult> Create(CreateDeviceDto dto)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -71,10 +62,9 @@ namespace Repair_Shop_App_Api.Controllers
             {
                 var exists = await _service.ExistsBySerialNumberAsync(dto.SerialNumber);
                 if (exists)
-                {
-                    return Conflict(new { message = "A device with this SerialNumber already exists." });
-                }
+                    return Conflict("Serial number already exists");
             }
+
             var model = new Devices
             {
                 DeviceTypeId = dto.DeviceTypeId,
@@ -88,20 +78,15 @@ namespace Repair_Shop_App_Api.Controllers
 
             var created = await _service.CreateAsync(model);
 
-            dto.Id = created.Id;
-
-            return CreatedAtAction(nameof(GetById), new { id = dto.Id }, dto);
+            return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(int id, DeviceDto dto)
+        public async Task<ActionResult> Update(int id, UpdateDeviceDto dto)
         {
-            if (!ModelState.IsValid) return BadRequest(ModelState);
-            if (id != dto.Id) return BadRequest();
-
             var model = new Devices
             {
-                Id = dto.Id,
+                Id = id,
                 DeviceTypeId = dto.DeviceTypeId,
                 Brand = dto.Brand,
                 Model = dto.Model,
@@ -114,7 +99,7 @@ namespace Repair_Shop_App_Api.Controllers
             var updated = await _service.UpdateAsync(model);
             if (updated == null) return NotFound();
 
-            return Ok(dto);
+            return Ok(updated);
         }
     }
 }

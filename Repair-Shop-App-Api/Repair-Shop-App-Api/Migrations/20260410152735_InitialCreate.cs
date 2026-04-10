@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Repair_Shop_App_Api.Migrations
 {
     /// <inheritdoc />
@@ -32,7 +34,7 @@ namespace Repair_Shop_App_Api.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     SortOrder = table.Column<int>(type: "int", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -62,8 +64,7 @@ namespace Repair_Shop_App_Api.Migrations
                         name: "FK_Devices_DeviceTypes_DeviceTypeId",
                         column: x => x.DeviceTypeId,
                         principalTable: "DeviceTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -87,8 +88,7 @@ namespace Repair_Shop_App_Api.Migrations
                         name: "FK_Repairs_Devices_DeviceId",
                         column: x => x.DeviceId,
                         principalTable: "Devices",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Repairs_StatusSteps_CurrentStatusId",
                         column: x => x.CurrentStatusId,
@@ -97,35 +97,55 @@ namespace Repair_Shop_App_Api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RepairStatusHistory",
+                name: "RepairStatusHistories",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RepairId = table.Column<int>(type: "int", nullable: false),
-                    StatusStepsId = table.Column<int>(type: "int", nullable: false),
+                    StatusStepId = table.Column<int>(type: "int", nullable: false),
                     ChangedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    RepairsId = table.Column<int>(type: "int", nullable: true)
+                    Note = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RepairStatusHistory", x => x.Id);
+                    table.PrimaryKey("PK_RepairStatusHistories", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RepairStatusHistory_Repairs_RepairId",
+                        name: "FK_RepairStatusHistories_Repairs_RepairId",
                         column: x => x.RepairId,
                         principalTable: "Repairs",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_RepairStatusHistory_Repairs_RepairsId",
-                        column: x => x.RepairsId,
-                        principalTable: "Repairs",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_RepairStatusHistory_StatusSteps_StatusStepsId",
-                        column: x => x.StatusStepsId,
+                        name: "FK_RepairStatusHistories_StatusSteps_StatusStepId",
+                        column: x => x.StatusStepId,
                         principalTable: "StatusSteps",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.InsertData(
+                table: "DeviceTypes",
+                columns: new[] { "Id", "IsActive", "Name" },
+                values: new object[,]
+                {
+                    { 1, true, "Mobile" },
+                    { 2, true, "Laptop" },
+                    { 3, true, "Tablet" },
+                    { 4, true, "Desktop" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "StatusSteps",
+                columns: new[] { "Id", "Description", "IsActive", "Name", "SortOrder" },
+                values: new object[,]
+                {
+                    { 1, null, true, "Received", 1 },
+                    { 2, null, true, "Diagnosed", 2 },
+                    { 3, null, true, "Waiting for Parts", 3 },
+                    { 4, null, true, "In Progress", 4 },
+                    { 5, null, true, "Quality Check", 5 },
+                    { 6, null, true, "Ready for Pickup", 6 },
+                    { 7, null, true, "Returned", 7 },
+                    { 8, null, true, "Cancelled", 8 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -150,19 +170,14 @@ namespace Repair_Shop_App_Api.Migrations
                 column: "DeviceId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RepairStatusHistory_RepairId",
-                table: "RepairStatusHistory",
+                name: "IX_RepairStatusHistories_RepairId",
+                table: "RepairStatusHistories",
                 column: "RepairId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RepairStatusHistory_RepairsId",
-                table: "RepairStatusHistory",
-                column: "RepairsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RepairStatusHistory_StatusStepsId",
-                table: "RepairStatusHistory",
-                column: "StatusStepsId");
+                name: "IX_RepairStatusHistories_StatusStepId",
+                table: "RepairStatusHistories",
+                column: "StatusStepId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StatusSteps_Name",
@@ -175,7 +190,7 @@ namespace Repair_Shop_App_Api.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RepairStatusHistory");
+                name: "RepairStatusHistories");
 
             migrationBuilder.DropTable(
                 name: "Repairs");

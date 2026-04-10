@@ -12,7 +12,7 @@ using Repair_Shop_App_Api.Data;
 namespace Repair_Shop_App_Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260330111256_InitialCreate")]
+    [Migration("20260410152735_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -47,6 +47,32 @@ namespace Repair_Shop_App_Api.Migrations
                         .IsUnique();
 
                     b.ToTable("DeviceTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsActive = true,
+                            Name = "Mobile"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsActive = true,
+                            Name = "Laptop"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsActive = true,
+                            Name = "Tablet"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsActive = true,
+                            Name = "Desktop"
+                        });
                 });
 
             modelBuilder.Entity("Repair_Shop_App_Api.Models.Devices", b =>
@@ -106,28 +132,22 @@ namespace Repair_Shop_App_Api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Note")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<int>("RepairId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RepairsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StatusStepsId")
+                    b.Property<int>("StatusStepId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RepairId");
 
-                    b.HasIndex("RepairsId");
+                    b.HasIndex("StatusStepId");
 
-                    b.HasIndex("StatusStepsId");
-
-                    b.ToTable("RepairStatusHistory");
+                    b.ToTable("RepairStatusHistories");
                 });
 
             modelBuilder.Entity("Repair_Shop_App_Api.Models.Repairs", b =>
@@ -180,7 +200,6 @@ namespace Repair_Shop_App_Api.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -201,6 +220,64 @@ namespace Repair_Shop_App_Api.Migrations
                         .IsUnique();
 
                     b.ToTable("StatusSteps");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsActive = true,
+                            Name = "Received",
+                            SortOrder = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsActive = true,
+                            Name = "Diagnosed",
+                            SortOrder = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsActive = true,
+                            Name = "Waiting for Parts",
+                            SortOrder = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsActive = true,
+                            Name = "In Progress",
+                            SortOrder = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IsActive = true,
+                            Name = "Quality Check",
+                            SortOrder = 5
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IsActive = true,
+                            Name = "Ready for Pickup",
+                            SortOrder = 6
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IsActive = true,
+                            Name = "Returned",
+                            SortOrder = 7
+                        },
+                        new
+                        {
+                            Id = 8,
+                            IsActive = true,
+                            Name = "Cancelled",
+                            SortOrder = 8
+                        });
                 });
 
             modelBuilder.Entity("Repair_Shop_App_Api.Models.Devices", b =>
@@ -208,7 +285,7 @@ namespace Repair_Shop_App_Api.Migrations
                     b.HasOne("Repair_Shop_App_Api.Models.DeviceTypes", "DeviceType")
                         .WithMany("Devices")
                         .HasForeignKey("DeviceTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("DeviceType");
@@ -217,18 +294,14 @@ namespace Repair_Shop_App_Api.Migrations
             modelBuilder.Entity("Repair_Shop_App_Api.Models.RepairStatusHistory", b =>
                 {
                     b.HasOne("Repair_Shop_App_Api.Models.Repairs", "Repair")
-                        .WithMany()
+                        .WithMany("StatusHistory")
                         .HasForeignKey("RepairId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Repair_Shop_App_Api.Models.Repairs", null)
-                        .WithMany("RepairStatusHistory")
-                        .HasForeignKey("RepairsId");
-
                     b.HasOne("Repair_Shop_App_Api.Models.StatusSteps", "StatusStep")
-                        .WithMany()
-                        .HasForeignKey("StatusStepsId")
+                        .WithMany("StatusHistory")
+                        .HasForeignKey("StatusStepId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -239,21 +312,21 @@ namespace Repair_Shop_App_Api.Migrations
 
             modelBuilder.Entity("Repair_Shop_App_Api.Models.Repairs", b =>
                 {
-                    b.HasOne("Repair_Shop_App_Api.Models.StatusSteps", "StatusStep")
-                        .WithMany()
+                    b.HasOne("Repair_Shop_App_Api.Models.StatusSteps", "CurrentStatus")
+                        .WithMany("Repairs")
                         .HasForeignKey("CurrentStatusId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.HasOne("Repair_Shop_App_Api.Models.Devices", "Device")
-                        .WithMany()
+                        .WithMany("Repairs")
                         .HasForeignKey("DeviceId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Device");
+                    b.Navigation("CurrentStatus");
 
-                    b.Navigation("StatusStep");
+                    b.Navigation("Device");
                 });
 
             modelBuilder.Entity("Repair_Shop_App_Api.Models.DeviceTypes", b =>
@@ -261,9 +334,21 @@ namespace Repair_Shop_App_Api.Migrations
                     b.Navigation("Devices");
                 });
 
+            modelBuilder.Entity("Repair_Shop_App_Api.Models.Devices", b =>
+                {
+                    b.Navigation("Repairs");
+                });
+
             modelBuilder.Entity("Repair_Shop_App_Api.Models.Repairs", b =>
                 {
-                    b.Navigation("RepairStatusHistory");
+                    b.Navigation("StatusHistory");
+                });
+
+            modelBuilder.Entity("Repair_Shop_App_Api.Models.StatusSteps", b =>
+                {
+                    b.Navigation("Repairs");
+
+                    b.Navigation("StatusHistory");
                 });
 #pragma warning restore 612, 618
         }

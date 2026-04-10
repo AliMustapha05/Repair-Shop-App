@@ -13,15 +13,13 @@ namespace Repair_Shop_App_Api.Repositories
             _context = context;
         }
 
-        // GET all devices
         public async Task<List<Devices>> GetAllAsync()
         {
             return await _context.Devices
-                .Include(d => d.DeviceType) // Include related DeviceType
+                .Include(d => d.DeviceType)
                 .ToListAsync();
         }
 
-        // GET device by ID
         public async Task<Devices?> GetByIdAsync(int id)
         {
             return await _context.Devices
@@ -29,7 +27,6 @@ namespace Repair_Shop_App_Api.Repositories
                 .FirstOrDefaultAsync(d => d.Id == id);
         }
 
-        // POST: create a new device
         public async Task<Devices> CreateAsync(Devices device)
         {
             _context.Devices.Add(device);
@@ -37,20 +34,17 @@ namespace Repair_Shop_App_Api.Repositories
             return device;
         }
 
-        // PUT: update a device by ID
         public async Task<Devices?> UpdateAsync(Devices device)
         {
             var existing = await _context.Devices.FindAsync(device.Id);
             if (existing == null) return null;
 
-            // Update fields
             existing.DeviceTypeId = device.DeviceTypeId;
             existing.Brand = device.Brand;
             existing.Model = device.Model;
             existing.SerialNumber = device.SerialNumber;
             existing.OwnerName = device.OwnerName;
             existing.OwnerPhone = device.OwnerPhone;
-            existing.CreatedAt = device.CreatedAt;
 
             await _context.SaveChangesAsync();
             return existing;

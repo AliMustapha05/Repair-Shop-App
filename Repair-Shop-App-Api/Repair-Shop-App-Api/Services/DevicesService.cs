@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Repair_Shop_App_Api.Models;
+﻿using Repair_Shop_App_Api.Models;
 using Repair_Shop_App_Api.Repositories;
 
 namespace Repair_Shop_App_Api.Services

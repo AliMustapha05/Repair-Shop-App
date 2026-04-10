@@ -13,19 +13,16 @@ namespace Repair_Shop_App_Api.Repositories
             _context = context;
         }
 
-        // GET all status steps
         public async Task<List<StatusSteps>> GetAllAsync()
         {
             return await _context.StatusSteps.ToListAsync();
         }
 
-        // GET status step by ID
         public async Task<StatusSteps?> GetByIdAsync(int id)
         {
             return await _context.StatusSteps.FindAsync(id);
         }
 
-        // POST: create a new status step
         public async Task<StatusSteps> CreateAsync(StatusSteps statusStep)
         {
             _context.StatusSteps.Add(statusStep);
@@ -33,7 +30,6 @@ namespace Repair_Shop_App_Api.Repositories
             return statusStep;
         }
 
-        // PUT: update a status step by ID
         public async Task<StatusSteps?> UpdateAsync(StatusSteps statusStep)
         {
             var existing = await _context.StatusSteps.FindAsync(statusStep.Id);
@@ -48,7 +44,6 @@ namespace Repair_Shop_App_Api.Repositories
             return existing;
         }
 
-        // DELETE: remove a status step by ID
         public async Task<bool> DeleteAsync(int id)
         {
             var existing = await _context.StatusSteps.FindAsync(id);
@@ -61,8 +56,7 @@ namespace Repair_Shop_App_Api.Repositories
 
         public async Task<bool> ExistsStepWithSameNameAsync(string name)
         {
-            // Returns true if a status step with the same name already exists
-            return await _context.StatusSteps.AnyAsync(s => s.Name == name);
+            return await _context.StatusSteps.AnyAsync(x => x.Name == name);
         }
     }
 }

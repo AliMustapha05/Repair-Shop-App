@@ -8,6 +8,7 @@ namespace Repair_Shop_App_Api.Models
         [Key]
         public int Id { get; set; }
 
+        // FK → Device
         [ForeignKey(nameof(Device))]
         public int DeviceId { get; set; }
 
@@ -15,26 +16,26 @@ namespace Repair_Shop_App_Api.Models
         [MaxLength(1000)]
         public string ProblemDescription { get; set; } = string.Empty;
 
-        [ForeignKey(nameof(StatusStep))]
+        // FK → Current Status
+        [ForeignKey(nameof(CurrentStatus))]
         public int CurrentStatusId { get; set; }
 
         [Required]
-        public DateTime ReceivedAt { get; set; } = DateTime.Now;
+        public DateTime ReceivedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime? CompletedAt { get; set; }
 
         [MaxLength(1000)]
-        public string? Notes { get; set; } = string.Empty;
+        public string? Notes { get; set; }
 
         [Column(TypeName = "decimal(10,2)")]
         public decimal? EstimatedCost { get; set; }
 
-
+        // 🔹 Navigation Properties
         public Devices Device { get; set; } = null!;
-        public StatusSteps StatusStep { get; set; } = null!;
-        public ICollection<RepairStatusHistory> RepairStatusHistory { get; set; } = new List<RepairStatusHistory>();
 
+        public StatusSteps CurrentStatus { get; set; } = null!;
 
-
+        public ICollection<RepairStatusHistory> StatusHistory { get; set; } = new List<RepairStatusHistory>();
     }
 }

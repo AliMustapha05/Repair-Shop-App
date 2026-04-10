@@ -6,49 +6,59 @@ using Repair_Shop_App_Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// -----------------------------
-// Add services to the container
-// -----------------------------
+// =============================
+// SERVICES
+// =============================
 
 builder.Services.AddScoped<DeviceTypesRepository>();
 builder.Services.AddScoped<DeviceTypesService>();
+
 builder.Services.AddScoped<DevicesRepository>();
 builder.Services.AddScoped<DevicesService>();
+
 builder.Services.AddScoped<RepairsRepository>();
 builder.Services.AddScoped<RepairsService>();
+
 builder.Services.AddScoped<StatusStepsRepository>();
 builder.Services.AddScoped<StatusStepsService>();
 
-// EF Core - SQL Server
+// 🔥 MISSING BEFORE (IMPORTANT if you use history)
+builder.Services.AddScoped<RepairStatusHistoryRepository>();
+builder.Services.AddScoped<RepairStatusHistoryService>();
+
+// DB Context
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// CORS - allow Angular frontend
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular",
         policy =>
         {
-            policy
-                .WithOrigins("http://localhost:4200")
-                .AllowAnyHeader()
-                .AllowAnyMethod();
+            policy.WithOrigins("http://localhost:4200")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
         });
 });
 
-// Add controllers
 builder.Services.AddControllers();
-
-// Swagger / OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddControllers()
+.AddJsonOptions(x =>
+{
+    x.JsonSerializerOptions.ReferenceHandler =
+        System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+});
+
 var app = builder.Build();
 
-// -----------------------------
-// Configure middleware
-// -----------------------------
+// =============================
+// MIDDLEWARE
+// =============================
 
 if (app.Environment.IsDevelopment())
 {
@@ -56,19 +66,27 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// -----------------------------
-// Database Migration + Seeding
-// -----------------------------
+app.UseCors("AllowAngular");
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+// =============================
+// DB MIGRATION + SEEDING
+// =============================
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
     try
     {
-        // 🔥 Ensure database + tables are created
         db.Database.Migrate();
 
+        // =========================
         // Seed DeviceTypes
+        // =========================
         if (!db.DeviceTypes.Any())
         {
             db.DeviceTypes.AddRange(
@@ -77,10 +95,13 @@ using (var scope = app.Services.CreateScope())
                 new DeviceTypes { Name = "Tablet", IsActive = true },
                 new DeviceTypes { Name = "Desktop", IsActive = true }
             );
+
             db.SaveChanges();
         }
 
+        // =========================
         // Seed StatusSteps
+        // =========================
         if (!db.StatusSteps.Any())
         {
             db.StatusSteps.AddRange(
@@ -89,25 +110,18 @@ using (var scope = app.Services.CreateScope())
                 new StatusSteps { Name = "Waiting for parts", SortOrder = 3, IsActive = true },
                 new StatusSteps { Name = "In progress", SortOrder = 4, IsActive = true },
                 new StatusSteps { Name = "Quality check", SortOrder = 5, IsActive = true },
-                new StatusSteps { Name = "Need of pickup", SortOrder = 6, IsActive = true },
+                new StatusSteps { Name = "Ready for pickup", SortOrder = 6, IsActive = true },
                 new StatusSteps { Name = "Returned", SortOrder = 7, IsActive = true },
                 new StatusSteps { Name = "Canceled", SortOrder = 8, IsActive = true }
             );
+
             db.SaveChanges();
         }
     }
     catch (Exception ex)
     {
-        Console.WriteLine("SEED ERROR: " + ex.ToString());
+        Console.WriteLine("SEED ERROR: " + ex);
     }
 }
-
-// -----------------------------
-
-app.UseCors("AllowAngular");
-
-app.UseAuthorization();
-
-app.MapControllers();
 
 app.Run();

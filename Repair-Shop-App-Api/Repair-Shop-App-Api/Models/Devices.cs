@@ -20,7 +20,7 @@ namespace Repair_Shop_App_Api.Models
         public string Model { get; set; } = string.Empty;
 
         [MaxLength(100)]
-        public string? SerialNumber { get; set; } = string.Empty;
+        public string? SerialNumber { get; set; }
 
         [Required]
         [MaxLength (200)]
@@ -31,10 +31,10 @@ namespace Repair_Shop_App_Api.Models
         public string OwnerPhone { get; set; } = string.Empty;
 
         [Required]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
 
         public DeviceTypes DeviceType { get; set; } = null!;
-
+        public ICollection<Repairs> Repairs { get; set; }
     }
 }

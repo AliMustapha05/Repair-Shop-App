@@ -4,6 +4,6 @@
     {
         public int DeviceId { get; set; }
         public string ProblemDescription { get; set; } = string.Empty;
-        public int CurrentStatusId { get; set; }
+        public int? CurrentStatusId { get; set; }
     }
 }

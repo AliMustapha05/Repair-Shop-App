@@ -8,6 +8,7 @@
         public string? SerialNumber { get; set; }
         public string OwnerName { get; set; } = string.Empty;
         public string OwnerPhone { get; set; } = string.Empty;
-        public int DeviceTypeId { get; set; } 
+        public int DeviceTypeId { get; set; }
+        public string? DeviceTypeName { get; set; }
     }
 }

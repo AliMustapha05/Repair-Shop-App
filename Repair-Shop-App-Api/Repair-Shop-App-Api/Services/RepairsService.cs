@@ -17,14 +17,14 @@ namespace Repair_Shop_App_Api.Services
             return await _repository.GetAllAsync();
         }
 
-        public async Task<Repairs> CreateAsync(Repairs repair)
-        {
-            return await _repository.CreateAsync(repair);
-        }
-
         public async Task<Repairs?> GetByIdAsync(int id)
         {
             return await _repository.GetByIdAsync(id);
+        }
+
+        public async Task<Repairs> CreateAsync(Repairs repair)
+        {
+            return await _repository.CreateAsync(repair);
         }
 
         public async Task<RepairStatusHistory> AddStatusAsync(RepairStatusHistory history)
