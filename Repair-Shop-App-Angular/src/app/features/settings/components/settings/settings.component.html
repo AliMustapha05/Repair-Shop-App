@@ -1,0 +1,87 @@
+<div class="settings-page">
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <h2>Settings</h2>
+      <p>Manage system configuration</p>
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button [class.active]="activeTab === 'status'" (click)="activeTab = 'status'">
+      Status Steps
+    </button>
+
+    <button [class.active]="activeTab === 'types'" (click)="activeTab = 'types'">
+      Device Types
+    </button>
+  </div>
+
+  <!-- ================= STATUS ================= -->
+  <div *ngIf="activeTab === 'status'" class="tab-content">
+    <!-- ADD CARD -->
+    <div class="card add-card">
+      <h3>Add Status Step</h3>
+
+      <div class="form-row">
+        <input [(ngModel)]="newStepName" placeholder="e.g. In Progress" />
+
+        <button (click)="addStatus()">Add</button>
+      </div>
+    </div>
+
+    <!-- LIST -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Status Steps</h3>
+      </div>
+
+      <div class="list">
+        <div class="list-item" *ngFor="let s of steps">
+          <div class="info">
+            <span class="badge">{{ s.id }}</span>
+            <span class="name">{{ s.name }}</span>
+          </div>
+
+          <button class="danger" (click)="deleteStatus(s.id)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= DEVICE TYPES ================= -->
+  <div *ngIf="activeTab === 'types'" class="tab-content">
+    <!-- ADD CARD -->
+    <div class="card add-card">
+      <h3>Add Device Type</h3>
+
+      <div class="form-row">
+        <input [(ngModel)]="newTypeName" placeholder="e.g. Laptop, Phone" />
+
+        <!-- ✅ ADD ICON INPUT -->
+        <input [(ngModel)]="newTypeIcon" placeholder="📱 💻 🖥️" />
+
+        <button (click)="addType()">Add</button>
+      </div>
+    </div>
+
+    <!-- LIST -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Device Types</h3>
+      </div>
+
+      <div class="list">
+        <div class="list-item" *ngFor="let t of types">
+          <div class="info">
+            <span class="badge">{{ t.id }}</span>
+            <span class="name">{{ t.name }}</span>
+          </div>
+
+          <button class="danger" (click)="deleteType(t.id)">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

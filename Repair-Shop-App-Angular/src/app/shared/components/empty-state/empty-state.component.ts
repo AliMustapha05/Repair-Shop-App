@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { EmptyStateService, EmptyStateData } from '../../services/empty-state.service';
 
 @Component({
   selector: 'app-empty-state',
@@ -10,6 +11,15 @@ import { CommonModule } from '@angular/common';
 })
 export class EmptyStateComponent {
 
-  @Input() message: string = 'No data found';
+  state: EmptyStateData | null = null;
 
+  constructor(private emptyService: EmptyStateService) {
+    this.emptyService.state$.subscribe(data => {
+      this.state = data;
+    });
+  }
+
+  hide() {
+    this.emptyService.hide();
+  }
 }

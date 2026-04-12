@@ -1,32 +1,64 @@
-<div>
-  <h2>Repairs</h2>
+<div class="page">
+  <div class="header">
+    <h2>Repair Management</h2>
+    <p>Manage all repair tickets</p>
+  </div>
 
-  <!-- Empty -->
-  <app-empty-state *ngIf="repairs.length === 0" message="No repairs found"> </app-empty-state>
+  <div class="card" *ngIf="repairs.length > 0; else empty">
+    <table>
+      <thead>
+        <tr>
+          <th>Ticket ID</th>
+          <th>Device</th>
+          <th>Owner</th>
+          <th>Status</th>
+          <th>Received Date</th>
 
-  <!-- Table -->
-  <table *ngIf="repairs.length > 0" border="1" width="100%">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Device Id</th>
-        <th>Issue</th>
-        <th>Status Step Id</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
+          <th>Actions</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      <tr *ngFor="let r of repairs">
-        <td>{{ r.id }}</td>
-        <td>{{ r.deviceId }}</td>
-        <td>{{ r.issueDescription }}</td>
-        <td>{{ r.statusStepId }}</td>
-        <td>
-          <button [routerLink]="['/repairs', r.id]">View</button>
-          <button (click)="delete(r.id)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      <tbody>
+        <tr *ngFor="let r of repairs">
+          <!-- Ticket ID -->
+          <td class="ticket">#{{ r.id }}</td>
+
+          <!-- Device -->
+          <td class="device-cell">
+            <div class="device-main">
+              <span class="icon">{{ getDeviceIcon(r.deviceId) }}</span>
+              <span class="name">{{ getDeviceName(r.deviceId) }}</span>
+            </div>
+
+            <div class="subtitle">
+              {{ r.problemDescription }}
+            </div>
+          </td>
+
+          <!-- Owner -->
+          <td>{{ getOwnerName(r.deviceId) }}</td>
+
+          <!-- Status (FIXED) -->
+          <td>
+            <span class="badge" [ngClass]="getStatusClass(r.currentStatusName)">
+              {{ r.currentStatusName }}
+            </span>
+          </td>
+
+          <!-- Date (FIXED FROM API) -->
+          <td>
+            {{ r.createdAt | date: 'MMM d, y' }}
+          </td>
+
+          <td class="actions">
+            <a [routerLink]="['/repairs/edit', r.id]" class="btn-edit"> Edit </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ng-template #empty>
+    <app-empty-state></app-empty-state>
+  </ng-template>
 </div>

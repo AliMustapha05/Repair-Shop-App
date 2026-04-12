@@ -1,8 +1,30 @@
+/* MAIN LAYOUT */
 .main-layout {
   display: flex;
+  height: 100vh;
+  background: #f5f7fb;
 }
 
+/* RIGHT SIDE (navbar + content) */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* CONTENT AREA */
 .content {
   flex: 1;
   padding: 20px;
+  overflow-y: auto;
+}
+
+/* SCROLLBAR (OPTIONAL NICE TOUCH) */
+.content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.content::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
 }

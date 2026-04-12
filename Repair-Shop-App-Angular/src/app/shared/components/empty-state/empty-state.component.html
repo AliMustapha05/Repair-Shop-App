@@ -1,3 +1,14 @@
-<div class="empty-state">
-  <p>{{ message }}</p>
+<div class="empty-container" *ngIf="state">
+  <div class="icon">
+    <span *ngIf="state.icon; else defaultIcon">{{ state.icon }}</span>
+    <ng-template #defaultIcon>📭</ng-template>
+  </div>
+
+  <h2 class="title">{{ state.title }}</h2>
+
+  <p class="message">{{ state.message }}</p>
+
+  <button *ngIf="state.actionText" class="btn" (click)="hide()">
+    {{ state.actionText }}
+  </button>
 </div>

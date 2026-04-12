@@ -1,4 +1,5 @@
-﻿using Repair_Shop_App_Api.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Repair_Shop_App_Api.Models;
 using Repair_Shop_App_Api.Repositories;
 
 namespace Repair_Shop_App_Api.Services
@@ -36,7 +37,10 @@ namespace Repair_Shop_App_Api.Services
         {
             return await _repository.DeleteAsync(id);
         }
-
+        public async Task<bool> IsUsedInRepairsAsync(int id)
+        {
+            return await _repository.IsUsedInRepairsAsync(id);
+        }
         public async Task<bool> ExistsStepWithSameNameAsync(string name)
         {
             return await _repository.ExistsStepWithSameNameAsync(name);

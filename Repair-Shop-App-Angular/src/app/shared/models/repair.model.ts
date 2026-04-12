@@ -1,23 +1,23 @@
 export interface RepairDto {
   id: number;
   deviceId: number;
-  issueDescription: string;
-  statusStepId: number;
+  currentStatusId: number;
+  currentStatusName?: string;
+  problemDescription: string;
+  createdAt: string;
+  completedAt: string | null;
+  notes: string | null;
 }
 
 export interface CreateRepairDto {
   deviceId: number;
-  issueDescription: string;
+  problemDescription: string;
+  currentStatusId: number;
 }
 
 export interface UpdateRepairDto {
   id: number;
   deviceId: number;
-  issueDescription: string;
-  statusStepId: number;
-}
-
-export interface RepairStatusHistoryDto {
-  statusStepId: number;
-  date: string;
+  problemDescription?: string;
+  currentStatusId: number;
 }

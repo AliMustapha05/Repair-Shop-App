@@ -1,33 +1,32 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ApiService } from '../services/api.service';
 import { StatusStepDto, CreateStatusStepDto, UpdateStatusStepDto } from '../../shared/models/status-step.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatusStepsService {
-  private apiUrl = 'https://localhost:7242/api/StatusSteps';
 
-  constructor(private http: HttpClient) { }
+  constructor(private api: ApiService) {}
 
   getAll(): Observable<StatusStepDto[]> {
-    return this.http.get<StatusStepDto[]>(this.apiUrl);
+    return this.api.get<StatusStepDto[]>('StatusSteps');
   }
 
   getById(id: number): Observable<StatusStepDto> {
-    return this.http.get<StatusStepDto>(`${this.apiUrl}/${id}`);
+    return this.api.get<StatusStepDto>(`StatusSteps/${id}`);
   }
 
-  create(step: CreateStatusStepDto): Observable<StatusStepDto> {
-    return this.http.post<StatusStepDto>(this.apiUrl, step);
+  create(dto: CreateStatusStepDto): Observable<StatusStepDto> {
+    return this.api.post<StatusStepDto>('StatusSteps', dto);
   }
 
-  update(id: number, step: UpdateStatusStepDto): Observable<StatusStepDto> {
-    return this.http.put<StatusStepDto>(`${this.apiUrl}/${id}`, step);
+  update(id: number, dto: UpdateStatusStepDto): Observable<StatusStepDto> {
+    return this.api.put<StatusStepDto>(`StatusSteps/${id}`, dto);
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.api.delete<void>(`StatusSteps/${id}`);
   }
 }

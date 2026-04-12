@@ -1,34 +1,155 @@
+/* =========================
+   PAGE
+========================= */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background: #f5f7fb;
+  min-height: 100vh;
+  font-family: Inter, sans-serif;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header h2 {
+  margin: 0;
+  color: #111827;
+}
+
+.header p {
+  margin-top: 4px;
+  color: #6b7280;
+  font-size: 14px;
+}
+
+/* =========================
+   INFO GRID
+========================= */
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.info-box {
+  background: #f9fafb;
+  padding: 12px;
+  border-radius: 10px;
+}
+
+.info-box h4 {
+  margin: 0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.info-box p {
+  margin-top: 6px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* =========================
+   FORM
+========================= */
+
+.field {
+  margin-bottom: 14px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+textarea {
+  min-height: 90px;
+  resize: none;
+}
+
+/* BUTTON */
+button {
+  width: 100%;
+  padding: 10px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+/* =========================
+   TIMELINE
+========================= */
+
 .timeline {
-  position: relative;
-  margin: 20px 0;
-  padding-left: 20px;
-  border-left: 2px solid #ccc;
+  margin-top: 10px;
+  border-left: 2px solid #e5e7eb;
+  padding-left: 15px;
 }
 
 .timeline-item {
   position: relative;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
-.circle {
-  position: absolute;
-  left: -10px;
-  top: 5px;
-  width: 15px;
-  height: 15px;
-  background: #007bff;
+.dot {
+  width: 10px;
+  height: 10px;
+  background: #2563eb;
   border-radius: 50%;
+  position: absolute;
+  left: -15px;
+  top: 5px;
 }
 
-.content {
-  padding-left: 10px;
+.content h4 {
+  margin: 0;
+  font-size: 14px;
+  color: #111827;
 }
 
-.status {
-  font-weight: bold;
+.content p {
+  margin: 4px 0;
+  font-size: 13px;
+  color: #6b7280;
 }
 
-.date {
+.content small {
+  color: #9ca3af;
   font-size: 12px;
-  color: gray;
 }

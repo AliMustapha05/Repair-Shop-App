@@ -1,11 +1,15 @@
+import { DeviceTypeDto } from './device-type.model';
+
 export interface DeviceDto {
   id: number;
+  deviceTypeId: number;
   brand: string;
   model: string;
   serialNumber: string | null;
   ownerName: string;
   ownerPhone: string;
-  deviceTypeId: number;
+
+   deviceType?: DeviceTypeDto;
 }
 
 export interface CreateDeviceDto {

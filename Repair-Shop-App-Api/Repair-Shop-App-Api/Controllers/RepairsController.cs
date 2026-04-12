@@ -29,8 +29,17 @@ namespace Repair_Shop_App_Api.Controllers
             {
                 Id = r.Id,
                 DeviceId = r.DeviceId,
+                DeviceModel = r.Device?.Model, // optional but useful
+
                 CurrentStatusId = r.CurrentStatusId,
+                CurrentStatusName = r.CurrentStatus?.Name,
+
                 ProblemDescription = r.ProblemDescription,
+
+                EstimatedCost = r.EstimatedCost,
+
+                CreatedAt = r.ReceivedAt,   
+
                 CompletedAt = r.CompletedAt,
                 Notes = r.Notes
             });
@@ -51,8 +60,17 @@ namespace Repair_Shop_App_Api.Controllers
             {
                 Id = r.Id,
                 DeviceId = r.DeviceId,
+                DeviceModel = r.Device?.Model,
+
                 CurrentStatusId = r.CurrentStatusId,
+                CurrentStatusName = r.CurrentStatus?.Name,
+
                 ProblemDescription = r.ProblemDescription,
+
+                EstimatedCost = r.EstimatedCost,
+
+                CreatedAt = r.ReceivedAt,   
+
                 CompletedAt = r.CompletedAt,
                 Notes = r.Notes
             });
@@ -85,7 +103,9 @@ namespace Repair_Shop_App_Api.Controllers
                 Id = created.Id,
                 DeviceId = created.DeviceId,
                 CurrentStatusId = created.CurrentStatusId,
-                ProblemDescription = created.ProblemDescription
+                ProblemDescription = created.ProblemDescription,
+
+                CreatedAt = created.ReceivedAt   
             });
         }
 
@@ -113,6 +133,17 @@ namespace Repair_Shop_App_Api.Controllers
                 created.Note,
                 created.ChangedAt
             });
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, UpdateRepairDto dto)
+        {
+            var result = await _service.UpdateAsync(id, dto);
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
         }
     }
 }

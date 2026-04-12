@@ -1,10 +1,21 @@
-<nav class="navbar">
-  <div class="logo">Repair Shop</div>
+<header class="navbar">
+  <!-- LEFT: Search -->
+  <div class="search-container">
+    <input type="text" placeholder="Search..." class="search-input" />
+  </div>
 
-  <ul class="nav-links">
-    <li><a routerLink="/dashboard">Dashboard</a></li>
-    <li><a routerLink="/devices">Devices</a></li>
-    <li><a routerLink="/repairs">Repairs</a></li>
-    <li><a routerLink="/settings">Settings</a></li>
-  </ul>
-</nav>
+  <!-- RIGHT: Icons + User -->
+  <div class="nav-actions">
+    <!-- Notifications -->
+    <div class="icon-btn">🔔</div>
+
+    <!-- Help -->
+    <div class="icon-btn">❓</div>
+
+    <!-- User -->
+    <div class="user">
+      <div class="avatar">A</div>
+      <span class="username">Admin</span>
+    </div>
+  </div>
+</header>

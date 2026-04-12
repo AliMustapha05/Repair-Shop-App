@@ -1,17 +1,70 @@
-<div class="form-container">
-  <h2>Add Repair</h2>
-
-  <form (ngSubmit)="submit()">
+<div class="page">
+  <!-- HEADER -->
+  <div class="header">
     <div>
-      <label>Device Id</label>
-      <input type="number" [(ngModel)]="repair.deviceId" name="deviceId" required />
+      <h2>{{ isEdit ? 'Edit Repair Ticket' : 'Create Repair Ticket' }}</h2>
+      <p>Manage repair details and status workflow</p>
+    </div>
+  </div>
+
+  <!-- FORM WRAPPER -->
+  <div class="layout">
+    <!-- LEFT FORM -->
+    <div class="card form-card">
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <!-- DEVICE -->
+        <div class="field">
+          <label>Device</label>
+          <select formControlName="deviceId">
+            <option value="">Select device</option>
+            <option *ngFor="let d of devices" [value]="d.id">{{ d.brand }} {{ d.model }}</option>
+          </select>
+        </div>
+
+        <!-- STATUS -->
+        <div class="field">
+          <label>Status</label>
+          <select formControlName="currentStatusId">
+            <option [ngValue]="null">Select Status</option>
+
+            <option *ngFor="let s of statuses" [value]="s.id">
+              {{ s.name }}
+            </option>
+          </select>
+        </div>
+
+        <!-- DESCRIPTION -->
+        <div class="field">
+          <label>Problem Description</label>
+          <textarea formControlName="problemDescription" placeholder="Write full issue details...">
+          </textarea>
+        </div>
+
+        <!-- BUTTON -->
+        <button type="submit">
+          {{ isEdit ? 'Update Ticket' : 'Create Ticket' }}
+        </button>
+      </form>
     </div>
 
-    <div>
-      <label>Issue Description</label>
-      <input type="text" [(ngModel)]="repair.issueDescription" name="issueDescription" required />
-    </div>
+    <!-- RIGHT PANEL (PREVIEW STYLE) -->
+    <div class="card side-card">
+      <h3>Repair Info</h3>
 
-    <button type="submit">Save</button>
-  </form>
+      <div class="info-box">
+        <p><strong>Tip:</strong></p>
+        <p>Choose correct status to keep workflow updated.</p>
+      </div>
+
+      <div class="info-box blue">
+        <p><strong>Status Flow</strong></p>
+        <p>Received → Diagnosed → In Progress → Ready</p>
+      </div>
+
+      <div class="info-box gray">
+        <p><strong>Note</strong></p>
+        <p>All changes are tracked automatically.</p>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,23 +1,35 @@
-<div>
-  <h2>Status Steps</h2>
+<div class="page">
+  <div class="header">
+    <h2>Status Steps</h2>
+  </div>
 
-  <!-- Empty -->
-  <app-empty-state *ngIf="steps.length === 0" message="No status steps found"> </app-empty-state>
+  <!-- ADD NEW -->
+  <div class="card add-box">
+    <input [(ngModel)]="newStepName" placeholder="Enter new status step" />
 
-  <!-- Table -->
-  <table *ngIf="steps.length > 0" border="1" width="100%">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-      </tr>
-    </thead>
+    <button (click)="add()">Add</button>
+  </div>
 
-    <tbody>
-      <tr *ngFor="let s of steps">
-        <td>{{ s.id }}</td>
-        <td>{{ s.name }}</td>
-      </tr>
-    </tbody>
-  </table>
+  <!-- TABLE -->
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let s of steps">
+          <td>{{ s.id }}</td>
+          <td>{{ s.name }}</td>
+          <td>
+            <button class="danger" (click)="deleteStatus(s.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

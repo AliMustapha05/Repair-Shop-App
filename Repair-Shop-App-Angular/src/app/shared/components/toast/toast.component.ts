@@ -11,17 +11,24 @@ import { ToastService, ToastMessage } from '../../services/toast.service';
 })
 export class ToastComponent {
 
-  toast: ToastMessage | null = null;
+  toasts: (ToastMessage & { id: number })[] = [];
+  counter = 0;
 
   constructor(private toastService: ToastService) {
-    this.toastService.toast$.subscribe(message => {
-      this.toast = message;
 
-      // auto hide after 3 seconds
+    this.toastService.toast$.subscribe(toast => {
+      const id = ++this.counter;
+
+      this.toasts.push({ ...toast, id });
+
       setTimeout(() => {
-        this.toast = null;
-      }, 3000);
+        this.remove(id);
+      }, toast.duration || 3000);
     });
+
   }
 
+  remove(id: number) {
+    this.toasts = this.toasts.filter(t => t.id !== id);
+  }
 }

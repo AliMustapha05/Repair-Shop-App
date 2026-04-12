@@ -1,31 +1,66 @@
-<div>
-  <h2>Devices</h2>
+<div class="page">
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <h2>Devices</h2>
+      <p>Manage all registered devices</p>
+    </div>
 
-  <!-- Empty State -->
-  <app-empty-state *ngIf="devices.length === 0" message="No devices found"> </app-empty-state>
+    <a routerLink="/devices/new" class="btn-primary"> + Add Device </a>
+  </div>
 
-  <!-- Table -->
-  <table *ngIf="devices.length > 0" border="1" width="100%">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Serial</th>
-        <th>Type Id</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
+  <!-- TABLE -->
+  <div class="card" *ngIf="devices.length > 0; else empty">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Brand</th>
+          <th>Model</th>
+          <th>Owner</th>
+          <th>Phone</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
 
-    <tbody>
-      <tr *ngFor="let d of devices">
-        <td>{{ d.id }}</td>
-        <td>{{ d.brand }} {{ d.model }}</td>
-        <td>{{ d.serialNumber }}</td>
-        <td>{{ d.deviceTypeId }}</td>
-        <td>
-          <button (click)="delete(d.id)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      <tbody>
+        <tr *ngFor="let d of devices">
+          <!-- ✅ DEVICE ID -->
+          <td class="device-id">#{{ d.id }}</td>
+
+          <!-- ✅ BRAND + ICON (FIXED HERE) -->
+          <td class="brand-cell">
+            <span class="icon">
+              {{ getDeviceIcon(d.deviceTypeId) }}
+            </span>
+            <span>{{ d.brand }}</span>
+          </td>
+
+          <!-- MODEL -->
+          <td>{{ d.model }}</td>
+
+          <!-- OWNER -->
+          <td>{{ d.ownerName }}</td>
+
+          <!-- PHONE -->
+          <td>{{ d.ownerPhone }}</td>
+
+          <!-- ACTION -->
+          <td class="actions">
+            <a [routerLink]="['/devices/edit', d.id]" class="btn-edit"> Edit </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <ng-template #empty>
+    <div class="empty">
+      <div class="icon">📦</div>
+      <h3>No Devices Found</h3>
+      <p>Add your first device to get started</p>
+      <a routerLink="/devices/new" class="btn-primary"> Add Device </a>
+    </div>
+  </ng-template>
 </div>

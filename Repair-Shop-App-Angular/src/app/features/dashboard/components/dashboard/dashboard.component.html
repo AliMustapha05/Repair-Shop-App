@@ -1,25 +1,87 @@
 <div class="dashboard">
-  <h2>Dashboard</h2>
+  <!-- LOADING -->
+  <div *ngIf="!isLoaded" class="loading">Loading dashboard...</div>
 
-  <div class="cards">
-    <div class="card">
-      <h3>Total Devices</h3>
-      <p>0</p>
+  <ng-container *ngIf="isLoaded">
+    <!-- HEADER -->
+    <div class="header">
+      <h2>Dashboard</h2>
+      <p class="subtitle">Overview of your repair shop performance</p>
     </div>
 
-    <div class="card">
-      <h3>Total Repairs</h3>
-      <p>0</p>
+    <!-- STATS -->
+    <div class="cards">
+      <div class="card blue">
+        <h3>{{ inProgressCount }}</h3>
+        <p>In Progress</p>
+      </div>
+
+      <div class="card green">
+        <h3>{{ readyCount }}</h3>
+        <p>Ready for Pickup</p>
+      </div>
+
+      <div class="card yellow">
+        <h3>{{ waitingCount }}</h3>
+        <p>Waiting for Parts</p>
+      </div>
+
+      <div class="card purple">
+        <h3>{{ diagnosedCount }}</h3>
+        <p>Diagnosed</p>
+      </div>
     </div>
 
-    <div class="card">
-      <h3>In Progress</h3>
-      <p>0</p>
-    </div>
+    <!-- GRID -->
+    <div class="grid">
+      <!-- LEFT -->
+      <div class="left">
+        <div class="table-card">
+          <h3>Recent Repairs</h3>
 
-    <div class="card">
-      <h3>Ready for Pickup</h3>
-      <p>0</p>
+          <table *ngIf="repairs.length > 0">
+            <thead>
+              <tr>
+                <th>Ticket</th>
+                <th>Device</th>
+                <th>Owner</th>
+                <th>Status</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let r of repairs | slice: 0 : 5">
+                <td>#{{ r.id }}</td>
+                <td>{{ r.deviceName }}</td>
+                <td>{{ r.ownerName }}</td>
+
+                <td>
+                  <span [class]="getStatusClass(r.statusName)">
+                    {{ r.statusName }}
+                  </span>
+                </td>
+
+                <td>{{ r.createdAt | date: 'mediumDate' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RIGHT -->
+      <div class="right">
+        <div class="activity-card">
+          <h3>Recent Activity</h3>
+
+          <ul>
+            <li *ngFor="let a of activities">
+              🛠️ Repair #{{ a.repairId }} → {{ a.statusName }}
+              <small>{{ a.changedAt | date: 'short' }}</small>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
-  </div>
+  </ng-container>
 </div>

@@ -1,18 +1,26 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+export interface EmptyStateData {
+  title: string;
+  message: string;
+  icon?: string;
+  actionText?: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class EmptyStateService {
-  private _isEmpty = new BehaviorSubject<boolean>(false);
-  public readonly isEmpty$ = this._isEmpty.asObservable();
 
-  show() {
-    this._isEmpty.next(true);
+  private _state = new BehaviorSubject<EmptyStateData | null>(null);
+  state$ = this._state.asObservable();
+
+  show(data: EmptyStateData) {
+    this._state.next(data);
   }
 
   hide() {
-    this._isEmpty.next(false);
+    this._state.next(null);
   }
 }

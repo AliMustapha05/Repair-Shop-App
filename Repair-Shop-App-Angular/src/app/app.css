@@ -1,47 +1,145 @@
-/* Reset & Global Styles */
+/* =========================
+   GLOBAL RESET
+========================= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: Inter, system-ui, Arial, sans-serif;
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f5f6fa;
-  color: #333;
-  line-height: 1.6;
+  background: #f5f7fb;
+  color: #111827;
 }
 
-/* Layout Helpers */
-main {
-  padding: 1rem;
+/* =========================
+   GLOBAL TYPOGRAPHY
+========================= */
+h1, h2, h3, h4 {
+  font-weight: 600;
 }
 
-/* Shared Component Overrides */
-app-loader,
-app-toast,
-app-confirm-dialog {
-  position: fixed;
-  top: 0;
-  left: 0;
+p {
+  color: #6b7280;
+}
+
+/* =========================
+   GLOBAL BUTTONS
+========================= */
+button {
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: 0.2s ease;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* Primary button */
+.btn-primary {
+  background: #2563eb;
+  color: white;
+  padding: 8px 12px;
+}
+
+/* Danger button */
+.btn-danger {
+  background: #ef4444;
+  color: white;
+  padding: 8px 12px;
+}
+
+/* Gray button */
+.btn-secondary {
+  background: #e5e7eb;
+  color: #374151;
+  padding: 8px 12px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+input, select, textarea {
+  border: 1px solid #e5e7eb;
+  padding: 8px;
+  border-radius: 6px;
+  outline: none;
   width: 100%;
-  z-index: 9999;
 }
 
-/* Scrollbar Styling */
-::-webkit-scrollbar {
-  width: 8px;
+input:focus, select:focus, textarea:focus {
+  border-color: #2563eb;
 }
 
-::-webkit-scrollbar-track {
-  background: #f5f5f5;
+/* =========================
+   CARDS
+========================= */
+.card {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
+/* =========================
+   TABLES
+========================= */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+tr:hover {
+  background: #f9fafb;
+}
+
+/* =========================
+   STATUS BADGES
+========================= */
+.badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Colors */
+.badge.green { background: #dcfce7; color: #22c55e; }
+.badge.orange { background: #fef3c7; color: #f59e0b; }
+.badge.yellow { background: #fef9c3; color: #eab308; }
+.badge.blue { background: #dbeafe; color: #3b82f6; }
+.badge.red { background: #fee2e2; color: #ef4444; }
+.badge.gray { background: #f3f4f6; color: #6b7280; }
+
+/* =========================
+   LAYOUT HELPERS
+========================= */
+.flex {
+  display: flex;
+}
+
+.grid {
+  display: grid;
+}
+
+.gap-10 {
+  gap: 10px;
+}
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

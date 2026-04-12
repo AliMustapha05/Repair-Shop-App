@@ -37,6 +37,7 @@ namespace Repair_Shop_App_Api.Repositories
 
             existing.Name = deviceType.Name;
             existing.IsActive = deviceType.IsActive;
+            existing.Icon = deviceType.Icon;
 
             await _context.SaveChangesAsync();
             return existing;

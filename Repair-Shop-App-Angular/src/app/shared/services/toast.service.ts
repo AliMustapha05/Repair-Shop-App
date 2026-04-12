@@ -4,24 +4,30 @@ import { Subject } from 'rxjs';
 export interface ToastMessage {
   message: string;
   type: 'success' | 'error' | 'info';
+  duration?: number;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToastService {
+
   private _toast = new Subject<ToastMessage>();
-  public readonly toast$ = this._toast.asObservable();
+  toast$ = this._toast.asObservable();
 
-  showSuccess(message: string) {
-    this._toast.next({ message, type: 'success' });
+  show(message: string, type: 'success' | 'error' | 'info' = 'info', duration = 3000) {
+    this._toast.next({ message, type, duration });
   }
 
-  showError(message: string) {
-    this._toast.next({ message, type: 'error' });
+  success(message: string) {
+    this.show(message, 'success');
   }
 
-  showInfo(message: string) {
-    this._toast.next({ message, type: 'info' });
+  error(message: string) {
+    this.show(message, 'error');
+  }
+
+  info(message: string) {
+    this.show(message, 'info');
   }
 }

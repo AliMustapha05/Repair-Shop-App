@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Repair_Shop_App_Api.DTOs.DeviceTypes;
 using Repair_Shop_App_Api.Models;
 using Repair_Shop_App_Api.Services;
@@ -31,6 +32,7 @@ namespace Repair_Shop_App_Api.Controllers
             var created = await _service.CreateAsync(new DeviceTypes
             {
                 Name = dto.Name,
+                Icon = string.IsNullOrWhiteSpace(dto.Icon) ? "📦" : dto.Icon,
                 IsActive = true
             });
 

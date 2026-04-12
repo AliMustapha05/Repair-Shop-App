@@ -1,23 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
+export interface ConfirmDialogData {
+  title: string;
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class ConfirmDialogService {
 
-  private _confirm = new Subject<boolean>();
-  confirm$ = this._confirm.asObservable();
+  private _open = new Subject<ConfirmDialogData>();
+  open$ = this._open.asObservable();
 
-  open() {
-    this._confirm.next(true); // trigger dialog open
+  private _result = new Subject<boolean>();
+  result$ = this._result.asObservable();
+
+  open(data: ConfirmDialogData) {
+    this._open.next(data);
   }
 
   confirm() {
-    this._confirm.next(true);
+    this._result.next(true);
   }
 
   cancel() {
-    this._confirm.next(false);
+    this._result.next(false);
   }
 }

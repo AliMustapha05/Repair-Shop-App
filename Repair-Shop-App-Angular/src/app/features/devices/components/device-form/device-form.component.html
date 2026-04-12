@@ -1,22 +1,25 @@
 <div class="form-container">
   <h2>Add Device</h2>
 
-  <form (ngSubmit)="submit()">
-    <div>
-      <label>Name</label>
-      <input type="text" [(ngModel)]="device.name" name="name" required />
-    </div>
+  <form (ngSubmit)="save()">
+    <label>Brand</label>
+    <input type="text" [(ngModel)]="device.brand" name="brand" required />
 
-    <div>
-      <label>Serial Number</label>
-      <input type="text" [(ngModel)]="device.serialNumber" name="serialNumber" required />
-    </div>
+    <label>Model</label>
+    <input type="text" [(ngModel)]="device.model" name="model" required />
 
-    <div>
-      <label>Device Type Id</label>
-      <input type="number" [(ngModel)]="device.deviceTypeId" name="deviceTypeId" required />
-    </div>
+    <label>Serial Number</label>
+    <input type="text" [(ngModel)]="device.serialNumber" name="serialNumber" />
 
-    <button type="submit">Save</button>
+    <label>Owner Name</label>
+    <input type="text" [(ngModel)]="device.ownerName" name="ownerName" required />
+
+    <label>Owner Phone</label>
+    <input type="text" [(ngModel)]="device.ownerPhone" name="ownerPhone" required />
+
+    <label>Device Type ID</label>
+    <input type="number" [(ngModel)]="device.deviceTypeId" name="deviceTypeId" required />
+
+    <button type="submit">{{ deviceId ? 'Update' : 'Add' }} Device</button>
   </form>
 </div>

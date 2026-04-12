@@ -37,5 +37,27 @@ namespace Repair_Shop_App_Api.Controllers
 
             return Ok(created);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var exists = await _service.GetByIdAsync(id);
+
+            if (exists == null)
+                return NotFound("Status step not found");
+
+            // optional safety check (recommended)
+            var isUsed = await _service.IsUsedInRepairsAsync(id);
+
+            if (isUsed)
+                return Conflict("Cannot delete: status step is used in repairs");
+
+            var deleted = await _service.DeleteAsync(id);
+
+            if (!deleted)
+                return BadRequest("Delete failed");
+
+            return NoContent();
+        }
     }
 }

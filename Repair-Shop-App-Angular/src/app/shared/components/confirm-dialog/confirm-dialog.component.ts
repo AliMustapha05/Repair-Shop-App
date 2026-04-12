@@ -12,21 +12,26 @@ import { ConfirmDialogService } from '../../services/confirm-dialog.service';
 export class ConfirmDialogComponent {
 
   isVisible = false;
+  title = '';
+  message = '';
 
   constructor(private confirmService: ConfirmDialogService) {
-    this.confirmService.confirm$.subscribe(() => {
+
+    this.confirmService.open$.subscribe(data => {
+      this.title = data.title;
+      this.message = data.message;
       this.isVisible = true;
     });
+
   }
 
   confirm() {
     this.isVisible = false;
-    this.confirmService.confirm(); // confirm action
+    this.confirmService.confirm();
   }
 
   cancel() {
     this.isVisible = false;
-    this.confirmService.cancel(); // cancel action
+    this.confirmService.cancel();
   }
-
 }

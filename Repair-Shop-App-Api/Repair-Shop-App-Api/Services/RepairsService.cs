@@ -1,4 +1,5 @@
-﻿using Repair_Shop_App_Api.Models;
+﻿using Repair_Shop_App_Api.DTOs.Repairs;
+using Repair_Shop_App_Api.Models;
 using Repair_Shop_App_Api.Repositories;
 
 namespace Repair_Shop_App_Api.Services
@@ -7,9 +8,15 @@ namespace Repair_Shop_App_Api.Services
     {
         private readonly RepairsRepository _repository;
 
-        public RepairsService(RepairsRepository repository)
+        private readonly RepairStatusHistoryRepository _historyRepository;
+
+        public RepairsService(
+            RepairsRepository repository,
+            RepairStatusHistoryRepository historyRepository
+        )
         {
             _repository = repository;
+            _historyRepository = historyRepository;
         }
 
         public async Task<List<Repairs>> GetAllAsync()
@@ -27,6 +34,11 @@ namespace Repair_Shop_App_Api.Services
             return await _repository.CreateAsync(repair);
         }
 
+        public async Task<List<RepairStatusHistory>> GetHistoryAsync(int repairId)
+        {
+            return await _historyRepository.GetByRepairIdAsync(repairId);
+        }
+
         public async Task<RepairStatusHistory> AddStatusAsync(RepairStatusHistory history)
         {
             return await _repository.AddStatusAsync(history);
@@ -36,5 +48,23 @@ namespace Repair_Shop_App_Api.Services
         {
             return await _repository.ExistsActiveRepairForDeviceAsync(deviceId);
         }
+
+        public async Task<Repairs?> UpdateAsync(int id, UpdateRepairDto dto)
+        {
+            var repair = await _repository.GetByIdAsync(id);
+
+            if (repair == null)
+                return null;
+
+            repair.DeviceId = dto.DeviceId;
+            repair.ProblemDescription = dto.ProblemDescription;
+            repair.CurrentStatusId = dto.CurrentStatusId;
+
+            await _repository.UpdateAsync(repair);
+
+            return repair;
+        }
+
+        
     }
 }

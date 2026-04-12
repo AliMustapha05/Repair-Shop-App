@@ -1,34 +1,71 @@
 import { Routes } from '@angular/router';
-
-// Features
-import { DeviceListComponent } from './features/devices/components/device-list/device-list.component';
-import { DeviceFormComponent } from './features/devices/components/device-form/device-form.component';
-import { RepairListComponent } from './features/repairs/components/repair-list/repair-list.component';
-import { RepairFormComponent } from './features/repairs/components/repair-form/repair-form.component';
-import { RepairDetailComponent } from './features/repairs/components/repair-detail/repair-detail.component';
-import { StatusStepsComponent } from './features/settings/components/status-steps/status-steps.component';
-import { DashboardComponent } from './features/dashboard/components/dashboard/dashboard.component';
+import { LayoutComponent } from './layout/layout/layout.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
 
-  // Dashboard
-  { path: 'dashboard', component: DashboardComponent },
+  // redirect
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
 
-  // Devices
-  { path: 'devices', component: DeviceListComponent },
-  { path: 'devices/new', component: DeviceFormComponent },
-  { path: 'devices/edit/:id', component: DeviceFormComponent },
+  {
+    path: '',
+    component: LayoutComponent,
+    children: [
 
-  // Repairs
-  { path: 'repairs', component: RepairListComponent },
-  { path: 'repairs/new', component: RepairFormComponent },
-  { path: 'repairs/edit/:id', component: RepairFormComponent },
-  { path: 'repairs/detail/:id', component: RepairDetailComponent },
+      // ================= DASHBOARD =================
+      {
+        path: 'dashboard',
+        loadComponent: () =>
+          import('./features/dashboard/components/dashboard/dashboard.component')
+            .then(m => m.DashboardComponent)
+      },
 
-  // Settings
-  { path: 'settings/status-steps', component: StatusStepsComponent },
+      // ================= DEVICES =================
+      {
+        path: 'devices',
+        loadComponent: () =>
+          import('./features/devices/components/device-list/device-list.component')
+            .then(m => m.DeviceListComponent)
+      },
+      {
+        path: 'devices/new',
+        loadComponent: () =>
+          import('./features/devices/components/device-form/device-form.component')
+            .then(m => m.DeviceFormComponent)
+      },
+      {
+        path: 'devices/edit/:id',
+        loadComponent: () =>
+          import('./features/devices/components/device-form/device-form.component')
+            .then(m => m.DeviceFormComponent)
+      },
 
-  // Fallback
-  { path: '**', redirectTo: '/dashboard' }
+      // ================= REPAIRS =================
+      {
+        path: 'repairs',
+        loadComponent: () =>
+          import('./features/repairs/components/repair-list/repair-list.component')
+            .then(m => m.RepairListComponent)
+      },
+      {
+        path: 'repairs/new',
+        loadComponent: () =>
+          import('./features/repairs/components/repair-form/repair-form.component')
+            .then(m => m.RepairFormComponent)
+      },
+      {
+        path: 'repairs/edit/:id',
+        loadComponent: () =>
+          import('./features/repairs/components/repair-detail/repair-detail.component')
+            .then(m => m.RepairDetailComponent)
+      },
+
+      // ================= SETTINGS (FIXED) =================
+      {
+        path: 'settings',
+        loadComponent: () =>
+          import('./features/settings/components/settings/settings.component')
+            .then(m => m.SettingsComponent)
+      }
+    ]
+  }
 ];

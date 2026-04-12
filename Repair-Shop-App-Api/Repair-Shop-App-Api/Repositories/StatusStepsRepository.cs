@@ -58,5 +58,11 @@ namespace Repair_Shop_App_Api.Repositories
         {
             return await _context.StatusSteps.AnyAsync(x => x.Name == name);
         }
+
+        public async Task<bool> IsUsedInRepairsAsync(int id)
+        {
+            return await _context.Repairs
+                .AnyAsync(r => r.CurrentStatusId == id);
+        }
     }
 }

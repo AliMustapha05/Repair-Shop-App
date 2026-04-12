@@ -28,5 +28,14 @@ namespace Repair_Shop_App_Api.Repositories
             await _context.SaveChangesAsync();
             return history;
         }
+
+        public async Task<List<RepairStatusHistory>> GetLatestAsync(int count)
+        {
+            return await _context.RepairStatusHistories
+                .Include(h => h.StatusStep)
+                .OrderByDescending(h => h.ChangedAt)
+                .Take(count)
+                .ToListAsync();
+        }
     }
 }

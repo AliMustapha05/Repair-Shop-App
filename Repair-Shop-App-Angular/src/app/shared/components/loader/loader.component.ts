@@ -11,6 +11,7 @@ import { LoaderService } from '../../services/loader.service';
 })
 export class LoaderComponent {
 
-  constructor(public loaderService: LoaderService) {}
+  loading$ = this.loader.loading$;
 
+  constructor(private loader: LoaderService) {}
 }

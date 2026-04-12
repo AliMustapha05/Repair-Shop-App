@@ -1,29 +1,79 @@
+/* NAVBAR */
 .navbar {
+  height: 60px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background-color: #007bff;
-  padding: 10px 20px;
-  color: white;
+  justify-content: space-between;
+  padding: 0 20px;
 }
 
-.logo {
-  font-weight: bold;
-  font-size: 18px;
+/* SEARCH */
+.search-container {
+  flex: 1;
+  max-width: 400px;
 }
 
-.nav-links {
-  list-style: none;
+.search-input {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  font-size: 14px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+/* RIGHT SIDE */
+.nav-actions {
   display: flex;
+  align-items: center;
   gap: 15px;
 }
 
-.nav-links li a {
-  color: white;
-  text-decoration: none;
-  font-weight: 500;
+/* ICON BUTTON */
+.icon-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
-.nav-links li a:hover {
-  text-decoration: underline;
+.icon-btn:hover {
+  background: #e5e7eb;
+}
+
+/* USER */
+.user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* AVATAR */
+.avatar {
+  width: 36px;
+  height: 36px;
+  background: #2563eb;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+/* USERNAME */
+.username {
+  font-size: 14px;
+  color: #111827;
 }

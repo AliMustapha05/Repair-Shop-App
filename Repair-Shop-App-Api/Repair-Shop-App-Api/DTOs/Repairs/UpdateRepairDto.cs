@@ -2,8 +2,8 @@
 {
     public class UpdateRepairDto
     {
+        public int DeviceId { get; set; }
+        public string? ProblemDescription { get; set; }
         public int CurrentStatusId { get; set; }
-        public decimal? EstimatedCost { get; set; }
-        public string? Notes { get; set; }
     }
 }

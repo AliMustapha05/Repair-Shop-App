@@ -1,33 +1,32 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ApiService } from '../services/api.service';
 import { DeviceDto, CreateDeviceDto, UpdateDeviceDto } from '../../shared/models/device.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DeviceService {
-  private apiUrl = 'https://localhost:7242/api/Devices'; 
 
-  constructor(private http: HttpClient) { }
+  constructor(private api: ApiService) {}
 
   getAll(): Observable<DeviceDto[]> {
-    return this.http.get<DeviceDto[]>(this.apiUrl);
+    return this.api.get<DeviceDto[]>('Devices');
   }
 
   getById(id: number): Observable<DeviceDto> {
-    return this.http.get<DeviceDto>(`${this.apiUrl}/${id}`);
+    return this.api.get<DeviceDto>(`Devices/${id}`);
   }
 
-  create(device: CreateDeviceDto): Observable<DeviceDto> {
-    return this.http.post<DeviceDto>(this.apiUrl, device);
+  create(dto: CreateDeviceDto): Observable<DeviceDto> {
+    return this.api.post<DeviceDto>('Devices', dto);
   }
 
-  update(id: number, device: UpdateDeviceDto): Observable<DeviceDto> {
-    return this.http.put<DeviceDto>(`${this.apiUrl}/${id}`, device);
+  update(id: number, dto: UpdateDeviceDto): Observable<DeviceDto> {
+    return this.api.put<DeviceDto>(`Devices/${id}`, dto);
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.api.delete<void>(`Devices/${id}`);
   }
 }

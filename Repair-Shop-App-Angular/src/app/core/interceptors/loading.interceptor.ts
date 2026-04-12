@@ -6,25 +6,19 @@ import {
   HttpRequest
 } from '@angular/common/http';
 import { Observable, finalize } from 'rxjs';
+import { LoaderService } from '../../shared/services/loader.service';
 
 @Injectable()
 export class LoadingInterceptor implements HttpInterceptor {
 
-  private totalRequests = 0;
+  constructor(private loader: LoaderService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    this.totalRequests++;
 
-    // TODO: show loader here
+    this.loader.show();
 
     return next.handle(req).pipe(
-      finalize(() => {
-        this.totalRequests--;
-
-        if (this.totalRequests === 0) {
-          // TODO: hide loader here
-        }
-      })
+      finalize(() => this.loader.hide())
     );
   }
 }

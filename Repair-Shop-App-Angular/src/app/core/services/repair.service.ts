@@ -1,41 +1,48 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { RepairDto, CreateRepairDto, UpdateRepairDto, RepairStatusHistoryDto } from '../../shared/models/repair.model';
+import { ApiService } from '../../core/services/api.service';
+
+import { RepairDto, CreateRepairDto, UpdateRepairDto } from '../../shared/models/repair.model';
+import { RepairStatusHistoryDto, CreateRepairStatusHistoryDto } from '../../shared/models/repair-status-history.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RepairsService {
-  private apiUrl = 'https://localhost:7242/api/Repairs';
 
-  constructor(private http: HttpClient) { }
+  constructor(private api: ApiService) {}
 
   getAll(): Observable<RepairDto[]> {
-    return this.http.get<RepairDto[]>(this.apiUrl);
+    return this.api.get<RepairDto[]>('Repairs');
   }
 
   getById(id: number): Observable<RepairDto> {
-    return this.http.get<RepairDto>(`${this.apiUrl}/${id}`);
+    return this.api.get<RepairDto>(`Repairs/${id}`);
   }
 
-  create(repair: CreateRepairDto): Observable<RepairDto> {
-    return this.http.post<RepairDto>(this.apiUrl, repair);
+  create(dto: CreateRepairDto): Observable<RepairDto> {
+    return this.api.post<RepairDto>('Repairs', dto);
   }
 
-  update(id: number, repair: UpdateRepairDto): Observable<RepairDto> {
-    return this.http.put<RepairDto>(`${this.apiUrl}/${id}`, repair);
+  update(id: number, dto: UpdateRepairDto): Observable<RepairDto> {
+    const payload = {
+      deviceId: dto.deviceId,
+      problemDescription: dto.problemDescription ?? '',
+      currentStatusId: dto.currentStatusId
+    };
+
+    return this.api.put<RepairDto>(`Repairs/${id}`, payload);
   }
 
-  delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
-  }
-
-  addStatus(repairId: number, status: RepairStatusHistoryDto): Observable<RepairStatusHistoryDto> {
-    return this.http.post<RepairStatusHistoryDto>(`${this.apiUrl}/${repairId}/status`, status);
+  addStatus(repairId: number, dto: CreateRepairStatusHistoryDto): Observable<any> {
+    return this.api.post<any>(`Repairs/${repairId}/status`, dto);
   }
 
   getHistory(repairId: number): Observable<RepairStatusHistoryDto[]> {
-    return this.http.get<RepairStatusHistoryDto[]>(`${this.apiUrl}/${repairId}/history`);
+    return this.api.get<RepairStatusHistoryDto[]>(`RepairStatusHistory/${repairId}`);
+  }
+
+  getLatestActivity(): Observable<any[]> {
+    return this.api.get<any[]>('RepairStatusHistory/latest');
   }
 }

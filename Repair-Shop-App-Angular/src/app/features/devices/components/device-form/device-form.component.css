@@ -1,19 +1,40 @@
 .form-container {
-  max-width: 400px;
+  max-width: 500px;
+  margin: 30px auto;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
 }
 
-form div {
-  margin-bottom: 10px;
+h2 {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: 500;
 }
 
 input {
   width: 100%;
-  padding: 6px;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
 }
 
 button {
-  padding: 8px 15px;
-  background-color: #007bff;
+  margin-top: 15px;
+  background: #2563eb;
   color: white;
+  padding: 10px;
   border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1d4ed8;
 }

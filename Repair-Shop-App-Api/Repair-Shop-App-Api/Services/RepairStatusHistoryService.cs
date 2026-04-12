@@ -21,5 +21,10 @@ namespace Repair_Shop_App_Api.Services
         {
             return await _repository.AddAsync(history);
         }
+
+        public async Task<List<RepairStatusHistory>> GetLatestAsync(int count)
+        {
+            return await _repository.GetLatestAsync(count);
+        }
     }
 }

@@ -1,6 +1,41 @@
-.empty-state {
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
   text-align: center;
-  padding: 30px;
-  color: #777;
-  font-size: 16px;
+}
+
+.icon {
+  font-size: 48px;
+  margin-bottom: 10px;
+  opacity: 0.8;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.message {
+  font-size: 14px;
+  color: #6b7280;
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+.btn {
+  padding: 8px 16px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #1d4ed8;
 }

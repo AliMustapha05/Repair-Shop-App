@@ -1,13 +1,20 @@
-<app-navbar></app-navbar>
+<div class="main-layout">
+  <!-- SIDEBAR -->
+  <app-sidebar></app-sidebar>
 
+  <!-- RIGHT SIDE -->
+  <div class="main-content">
+    <!-- NAVBAR -->
+    <app-navbar></app-navbar>
+
+    <!-- PAGE CONTENT -->
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+<!-- GLOBAL COMPONENTS -->
 <app-loader></app-loader>
 <app-toast></app-toast>
 <app-confirm-dialog></app-confirm-dialog>
-
-<div class="main-layout">
-  <app-sidebar></app-sidebar>
-
-  <div class="content">
-    <router-outlet></router-outlet>
-  </div>
-</div>

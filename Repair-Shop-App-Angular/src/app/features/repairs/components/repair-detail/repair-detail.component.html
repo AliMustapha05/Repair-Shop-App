@@ -1,13 +1,70 @@
-<div>
-  <h2>Repair Details</h2>
+<div class="page">
+  <!-- REPAIR HEADER CARD -->
+  <div class="card" *ngIf="repair">
+    <div class="header">
+      <div>
+        <h2>Repair #{{ repair.id }}</h2>
+        <p>Repair details & tracking timeline</p>
+      </div>
+    </div>
 
-  <div class="timeline">
-    <div class="timeline-item" *ngFor="let h of history">
-      <div class="circle"></div>
+    <div class="info-grid">
+      <div class="info-box">
+        <h4>Device</h4>
+        <p>{{ repair.deviceId }}</p>
+      </div>
 
-      <div class="content">
-        <p class="status">Status ID: {{ h.statusStepId }}</p>
-        <p class="date">{{ h.date }}</p>
+      <div class="info-box">
+        <h4>Status</h4>
+        <p>{{ repair.currentStatusId }}</p>
+      </div>
+
+      <div class="info-box">
+        <h4>Description</h4>
+        <p>{{ repair.problemDescription }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- UPDATE STATUS -->
+  <div class="card">
+    <h3>Update Status</h3>
+
+    <form [formGroup]="form" (ngSubmit)="addStatus()">
+      <div class="field">
+        <label>Status</label>
+
+        <select formControlName="statusStepId">
+          <option [ngValue]="null">Select Status</option>
+
+          <option *ngFor="let s of statuses" [value]="s.id">
+            {{ s.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Note</label>
+        <textarea formControlName="note" placeholder="Optional note..."></textarea>
+      </div>
+
+      <button type="submit">Add Status</button>
+    </form>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="card">
+    <h3>Status History</h3>
+
+    <div class="timeline">
+      <div class="timeline-item" *ngFor="let h of history">
+        <div class="dot"></div>
+
+        <div class="content">
+          <h4>Status #{{ h.statusStepId }}</h4>
+          <p>{{ h.note || 'No note' }}</p>
+          <small>{{ h.changedAt | date: 'medium' }}</small>
+        </div>
       </div>
     </div>
   </div>

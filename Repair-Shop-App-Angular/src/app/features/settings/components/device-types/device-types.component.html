@@ -1,0 +1,61 @@
+<div class="page">
+  <!-- HEADER -->
+  <div class="header">
+    <h2>Device Types</h2>
+    <p>Manage all device categories</p>
+  </div>
+
+  <!-- FORM -->
+  <div class="card form-card">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" formControlName="name" placeholder="Enter device type" />
+      </div>
+
+      <!-- ✅ ICON INPUT (FIXED - NO CHANGE IN STRUCTURE) -->
+      <div class="form-group">
+        <label>Icon</label>
+        <input type="text" formControlName="icon" placeholder="📱 💻 🖥️" />
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn primary">
+          {{ isEditing ? 'Update' : 'Create' }}
+        </button>
+
+        <button type="button" class="btn gray" (click)="reset()">Reset</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- LIST -->
+  <div class="card">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let item of deviceTypes">
+          <td>{{ item.id }}</td>
+
+          <!-- ✅ SHOW ICON + NAME (NEW FIX) -->
+          <td>
+            <span style="margin-right: 8px">{{ item.icon || '📦' }}</span>
+            {{ item.name }}
+          </td>
+
+          <td>
+            <button class="btn small" (click)="edit(item)">Edit</button>
+            <button class="btn small danger" (click)="delete(item.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

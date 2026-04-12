@@ -1,4 +1,5 @@
-﻿using Repair_Shop_App_Api.Models;
+﻿using Repair_Shop_App_Api.DTOs.DeviceTypes;
+using Repair_Shop_App_Api.Models;
 using Repair_Shop_App_Api.Repositories;
 
 namespace Repair_Shop_App_Api.Services
@@ -12,9 +13,16 @@ namespace Repair_Shop_App_Api.Services
             _repository = repository;
         }
 
-        public async Task<List<DeviceTypes>> GetAllAsync()
+        public async Task<List<DeviceTypeDto>> GetAllAsync()
         {
-            return await _repository.GetAllAsync();
+            var data = await _repository.GetAllAsync();
+
+            return data.Select(x => new DeviceTypeDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Icon = x.Icon ?? "📦"
+            }).ToList();
         }
 
         public async Task<DeviceTypes?> GetByIdAsync(int id)
