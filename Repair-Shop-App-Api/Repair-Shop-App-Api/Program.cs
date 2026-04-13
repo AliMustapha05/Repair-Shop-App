@@ -28,7 +28,7 @@ builder.Services.AddScoped<RepairStatusHistoryService>();
 
 // DB Context
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"))   
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
 // CORS
