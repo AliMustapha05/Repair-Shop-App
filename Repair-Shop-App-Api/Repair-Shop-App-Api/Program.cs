@@ -33,7 +33,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 // =============================
-// CORS (FIXED FOR PRODUCTION)
+// CORS (PRODUCTION SAFE)
 // =============================
 builder.Services.AddCors(options =>
 {
@@ -46,7 +46,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-// Controllers + JSON config
+// Controllers + JSON
 builder.Services.AddControllers()
 .AddJsonOptions(x =>
 {
@@ -55,6 +55,8 @@ builder.Services.AddControllers()
 });
 
 builder.Services.AddEndpointsApiExplorer();
+
+// Swagger ALWAYS ENABLED (FIX FOR RENDER 404)
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
@@ -63,11 +65,8 @@ var app = builder.Build();
 // MIDDLEWARE
 // =============================
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors("AllowAngular");
 
@@ -76,21 +75,17 @@ app.UseAuthorization();
 app.MapControllers();
 
 // =============================
-// SAFE DB SEEDING (NO CRASH ON RENDER)
+// SAFE SEEDING (NO MIGRATE ON RENDER)
 // =============================
-
 using (var scope = app.Services.CreateScope())
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
     try
     {
-        // ⚠️ IMPORTANT: DO NOT AUTO MIGRATE ON RENDER
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        // ❌ DO NOT RUN MIGRATE ON RENDER
         // db.Database.Migrate();
 
-        // =========================
-        // Seed DeviceTypes
-        // =========================
         if (!db.DeviceTypes.Any())
         {
             db.DeviceTypes.AddRange(
@@ -103,9 +98,6 @@ using (var scope = app.Services.CreateScope())
             db.SaveChanges();
         }
 
-        // =========================
-        // Seed StatusSteps
-        // =========================
         if (!db.StatusSteps.Any())
         {
             db.StatusSteps.AddRange(
@@ -124,8 +116,10 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        Console.WriteLine("DB SEED ERROR (ignored for deployment): " + ex.Message);
+        Console.WriteLine("DB SEED ERROR (ignored): " + ex.Message);
     }
 }
+
+app.MapGet("/", () => "Repair Shop API is running 🚀");
 
 app.Run();
