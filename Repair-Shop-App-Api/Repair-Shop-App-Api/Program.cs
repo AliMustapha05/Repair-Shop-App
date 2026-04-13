@@ -22,37 +22,40 @@ builder.Services.AddScoped<RepairsService>();
 builder.Services.AddScoped<StatusStepsRepository>();
 builder.Services.AddScoped<StatusStepsService>();
 
-// 🔥 MISSING BEFORE (IMPORTANT if you use history)
 builder.Services.AddScoped<RepairStatusHistoryRepository>();
 builder.Services.AddScoped<RepairStatusHistoryService>();
 
-// DB Context
+// =============================
+// DB CONTEXT
+// =============================
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// CORS
+// =============================
+// CORS (FIXED FOR PRODUCTION)
+// =============================
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular",
         policy =>
         {
-            policy.WithOrigins("http://localhost:4200")
+            policy.AllowAnyOrigin()
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
 });
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
+// Controllers + JSON config
 builder.Services.AddControllers()
 .AddJsonOptions(x =>
 {
     x.JsonSerializerOptions.ReferenceHandler =
         System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
 });
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -73,7 +76,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 // =============================
-// DB MIGRATION + SEEDING
+// SAFE DB SEEDING (NO CRASH ON RENDER)
 // =============================
 
 using (var scope = app.Services.CreateScope())
@@ -82,7 +85,8 @@ using (var scope = app.Services.CreateScope())
 
     try
     {
-        db.Database.Migrate();
+        // ⚠️ IMPORTANT: DO NOT AUTO MIGRATE ON RENDER
+        // db.Database.Migrate();
 
         // =========================
         // Seed DeviceTypes
@@ -120,7 +124,7 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        Console.WriteLine("SEED ERROR: " + ex);
+        Console.WriteLine("DB SEED ERROR (ignored for deployment): " + ex.Message);
     }
 }
 
