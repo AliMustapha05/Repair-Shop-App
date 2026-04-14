@@ -26,13 +26,14 @@ builder.Services.AddScoped<RepairStatusHistoryRepository>();
 builder.Services.AddScoped<RepairStatusHistoryService>();
 
 // =============================
-// DB CONTEXT
+// DB CONTEXT (PostgreSQL)
 // =============================
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
 
 // =============================
-// CORS (PRODUCTION SAFE)
+// CORS (ALLOW ALL - FOR TESTING)
 // =============================
 builder.Services.AddCors(options =>
 {
@@ -45,7 +46,9 @@ builder.Services.AddCors(options =>
         });
 });
 
-// Controllers + JSON
+// =============================
+// CONTROLLERS + JSON
+// =============================
 builder.Services.AddControllers()
 .AddJsonOptions(x =>
 {
@@ -54,8 +57,6 @@ builder.Services.AddControllers()
 });
 
 builder.Services.AddEndpointsApiExplorer();
-
-// Swagger ALWAYS ENABLED (FIX FOR RENDER 404)
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
@@ -64,6 +65,7 @@ var app = builder.Build();
 // MIDDLEWARE
 // =============================
 
+// ✅ ALWAYS ENABLE SWAGGER (IMPORTANT FOR RENDER)
 app.UseSwagger();
 app.UseSwaggerUI();
 
@@ -74,16 +76,16 @@ app.UseAuthorization();
 app.MapControllers();
 
 // =============================
-// SAFE SEEDING (NO MIGRATE ON RENDER)
+// 🚨 DISABLED DB SEEDING (IMPORTANT)
 // =============================
+// This prevents 500 errors when DB is not ready
+
+/*
 using (var scope = app.Services.CreateScope())
 {
     try
     {
         var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-        // ❌ DO NOT RUN MIGRATE ON RENDER
-        // db.Database.Migrate();
 
         if (!db.DeviceTypes.Any())
         {
@@ -118,7 +120,14 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine("DB SEED ERROR (ignored): " + ex.Message);
     }
 }
+*/
 
+// =============================
+// TEST ROUTE
+// =============================
 app.MapGet("/", () => "Repair Shop API is running 🚀");
 
+// =============================
+// RUN
+// =============================
 app.Run();
