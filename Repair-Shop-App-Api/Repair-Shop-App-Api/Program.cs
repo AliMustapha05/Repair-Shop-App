@@ -6,10 +6,7 @@ using Repair_Shop_App_Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// =============================
 // SERVICES
-// =============================
-
 builder.Services.AddScoped<DeviceTypesRepository>();
 builder.Services.AddScoped<DeviceTypesService>();
 
@@ -25,16 +22,12 @@ builder.Services.AddScoped<StatusStepsService>();
 builder.Services.AddScoped<RepairStatusHistoryRepository>();
 builder.Services.AddScoped<RepairStatusHistoryService>();
 
-// =============================
-// DB CONTEXT (PostgreSQL)
-// =============================
+// DB (POSTGRESQL)
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// =============================
-// CORS (ALLOW ALL - FOR TESTING)
-// =============================
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngular",
@@ -46,9 +39,6 @@ builder.Services.AddCors(options =>
         });
 });
 
-// =============================
-// CONTROLLERS + JSON
-// =============================
 builder.Services.AddControllers()
 .AddJsonOptions(x =>
 {
@@ -61,73 +51,15 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// =============================
 // MIDDLEWARE
-// =============================
-
-// ✅ ALWAYS ENABLE SWAGGER (IMPORTANT FOR RENDER)
 app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseCors("AllowAngular");
-
 app.UseAuthorization();
-
 app.MapControllers();
 
-// =============================
-// 🚨 DISABLED DB SEEDING (IMPORTANT)
-// =============================
-// This prevents 500 errors when DB is not ready
-
-/*
-using (var scope = app.Services.CreateScope())
-{
-    try
-    {
-        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-        if (!db.DeviceTypes.Any())
-        {
-            db.DeviceTypes.AddRange(
-                new DeviceTypes { Name = "Mobile", IsActive = true },
-                new DeviceTypes { Name = "Laptop", IsActive = true },
-                new DeviceTypes { Name = "Tablet", IsActive = true },
-                new DeviceTypes { Name = "Desktop", IsActive = true }
-            );
-
-            db.SaveChanges();
-        }
-
-        if (!db.StatusSteps.Any())
-        {
-            db.StatusSteps.AddRange(
-                new StatusSteps { Name = "Received", SortOrder = 1, IsActive = true },
-                new StatusSteps { Name = "Diagnosed", SortOrder = 2, IsActive = true },
-                new StatusSteps { Name = "Waiting for parts", SortOrder = 3, IsActive = true },
-                new StatusSteps { Name = "In progress", SortOrder = 4, IsActive = true },
-                new StatusSteps { Name = "Quality check", SortOrder = 5, IsActive = true },
-                new StatusSteps { Name = "Ready for pickup", SortOrder = 6, IsActive = true },
-                new StatusSteps { Name = "Returned", SortOrder = 7, IsActive = true },
-                new StatusSteps { Name = "Canceled", SortOrder = 8, IsActive = true }
-            );
-
-            db.SaveChanges();
-        }
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine("DB SEED ERROR (ignored): " + ex.Message);
-    }
-}
-*/
-
-// =============================
 // TEST ROUTE
-// =============================
 app.MapGet("/", () => "Repair Shop API is running 🚀");
 
-// =============================
-// RUN
-// =============================
 app.Run();
